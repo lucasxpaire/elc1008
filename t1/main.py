@@ -1,5 +1,4 @@
 from class_maquina import Maquina
-from class_transicao import Transicao
 
 def le_arquivo(path):
     with open(path, "r") as f:
@@ -14,3 +13,4 @@ def le_arquivo(path):
         return definicaoMaquina
 
 maquina = le_arquivo("entrada-quintupla.txt")
+Maquina(maquina['estados'], maquina['alfabetoEntrada'], maquina['alfabetoFita'], maquina['funcoesTransicao'])
