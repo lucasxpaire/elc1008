@@ -21,7 +21,7 @@ class MTReversivel:
         self.fita_input = []
         self.fita_history = ['/']  # Inicia com '/'
         self.fita_output = ['/']   # Inicia com '/'
-        self.cabecote_input = 0
+        self.cabecote_input = 0 #index
         self.cabecote_history = 0
         self.cabecote_output = 0
         self.estado_atual = None
@@ -33,28 +33,28 @@ class MTReversivel:
 
             # Primeira linha: números básicos
             nums = linhas[0].split()
-            num_estados = int(nums[0])
-            num_simbolos_entrada = int(nums[1])
-            num_simbolos_fita = int(nums[2])
-            num_transicoes = int(nums[3])
+            num_estados = int(nums[0]) #qtd de estados
+            num_simbolos_entrada = int(nums[1]) #qtd simbolos entrada
+            num_simbolos_fita = int(nums[2]) #qtd simbolos escreviveis
+            num_transicoes = int(nums[3]) #
 
             # Estados
-            self.estados = list(map(int, linhas[1].split()))
-            self.estado_inicial = self.estados[0]
-            self.estado_final = self.estados[-1]
-            self.estado_atual = self.estado_inicial
+            self.estados = list(map(int, linhas[1].split())) 
+            self.estado_inicial = self.estados[0] 
+            self.estado_final = self.estados[-1] 
+            self.estado_atual = self.estado_inicial 
 
             # Alfabetos
             self.alfabeto_entrada = linhas[2].split()
             self.alfabeto_fita = linhas[3].split()
 
             # Transições
-            for i in range(4, 4 + num_transicoes):
+            for i in range(4, 4 + num_transicoes): #linha 5 até 5 + qtd transicoes
                 partes = linhas[i].split('=')
-                esq = partes[0].strip('()').split(',')
-                dir = partes[1].strip('()').split(',')
+                esq = partes[0].strip('()').split(',') #esq -> estado atual na maquina + char lido
+                dir = partes[1].strip('()').split(',') #dir -> prox estado, oq escreve, movimento leitura
 
-                transicao = Transicao(
+                transicao = Transicao( 
                     estado_origem=int(esq[0]),
                     simbolo_lido=esq[1],
                     simbolo_escrito=dir[1],
@@ -75,8 +75,8 @@ class MTReversivel:
                 self.cabecote_input = 0
             elif self.cabecote_input >= len(self.fita_input):
                 self.fita_input.append('B')
-
-            simbolo = self.fita_input[self.cabecote_input]
+            
+            simbolo = self.fita_input[self.cabecote_input] #pega simbolo 
             
             # Encontrar transição válida
             for trans in self.transicoes:
