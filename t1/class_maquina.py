@@ -45,9 +45,9 @@ class Maquina:
 
     def move_cabecote(self, dirEsq):
         if dirEsq == 'R':
-            self.posicaoCabecote+1
+            self.posicaoCabecote=self.posicaoCabecote+1
         elif dirEsq == 'L':
-            self.posicaoCabecote-1
+            self.posicaoCabecote=self.posicaoCabecote-1
 
     def processamento_main(self):
         if self.faseAtual == 1:
@@ -59,9 +59,10 @@ class Maquina:
 
 
     def _computacao_direta(self, ):
-            while self.posicaoCabecote < len(self.fitaEntradaESaida):
-                charLido = self.fitaEntradaESaida[self.posicaoCabecote]
-                tripla = self.dicionarioTransicoes[self.estadoAtual][charLido]
-                self.estadoAtual = tripla[0]
-                self.escreve_fita(tripla[1])
-                self.move_cabecote(tripla[2])
+        while self.posicaoCabecote < len(self.fitaEntradaESaida):
+            charLido = self.fitaEntradaESaida[self.posicaoCabecote]
+            tripla = self.dicionarioTransicoes[self.estadoAtual][charLido]
+            self.estadoAtual = tripla[0]
+            self.escreve_fita(tripla[1])
+            self.move_cabecote(tripla[2])
+        self.faseAtual=2
