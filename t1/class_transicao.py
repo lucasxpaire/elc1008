@@ -5,3 +5,7 @@ class Transicao:
         self.proxTransicao = proxEstado
         self.charEscrito = charEscrito
         self.movimentoCabeco = movimentoCabecote #cabecote += movimentoCabecote 1 ou -1 
+
+
+        def get_estadoAtual(self):
+            return estadoAtual

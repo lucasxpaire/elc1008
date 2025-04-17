@@ -1,21 +1,68 @@
-from class_transicao import Transicao
 class Maquina:
     def __init__(self, estados:list, alfabetoEntrada: list, alfabetoSaidaFita: list, funcoesTransicao:list):
+        #Inicialização da máquina
         self.estados = estados
         self.alfabetoEntrada = alfabetoEntrada
         self.alfabetoSaidaFita = alfabetoSaidaFita
-        self.funcoesTransicao = self.defineFuncoesTransicao(funcoesTransicao)
+        self.funcoesTransicao = dict() 
+        self._define_funcoes_transicao(funcoesTransicao)
+        self.dicionarioTransicoes = dict()
+        #-------------------
+        self.estadoAtual = self.funcoesTransicao[0].get_estadoAtual() #primeiro item da lista sempre é o primeiro estado da maquina
+        self.posicaoCabecote = 0
+        self.fitaEntradaESaida = str()  
+        self.fitaHistorico = str()
+        self.fitaCopiaFinal = str()
+        self.faseAtual = 1
 
-    def defineFuncoesTransicao(funcoesTransicao):
+
+    def _define_funcoes_transicao(self, funcoesTransicao:list)->list:
+        """Cria as funções de transição descritas na entrada 
+
+        Args:
+            funcoesTransicao (list): Lista de strings com o padrão (1,1)=(3,$,R)
+
+        Returns:
+            list: lista de Transicao
+        """
         #funcoesTransicao -> ["(1,1)=(3,$,R)",""]
-        listaTransicoes = list()
         for transicao in funcoesTransicao:
             partes = transicao.split('=')
-            condicao = partes[0].strip('()').split(',') #0: estado atual na maquina,1: char lido
-            acao = partes[1].strip('()').split(',')     #0: proxEstado, 1: charEscrito, 2: movimentoCabecote
+            condicao = partes[0].strip('()').split(',')   #0: estado atual na maquina,1: char lido
+            tripla = partes[1].strip('()').split(',')     #0: proxEstado, 1: charEscrito, 2: movimentoCabecote
 
-            novaT = Transicao(condicao[0], condicao[1], acao[0], acao[1], acao[2])
-            listaTransicoes.append(novaT)
+            self.dicionarioTransicoes[str(condicao[0])][condicao[1]]=tripla
 
-        return listaTransicoes
-            
+    def set_fita_entrada(self, fita: str):
+        self.fitaEntradaESaida = fita
+
+
+    def escreve_fita(self, char:str):
+        self.fitaEntradaESaida[self.posicaoCabecote] = char
+
+    
+    def move_cabecote(self, dirEsq):
+        if dirEsq == 'R':
+            self.posicaoCabecote+1
+        elif dirEsq == 'L':
+            self.posicaoCabecote-1
+
+
+    def processamento_main(self):
+        if self.faseAtual == 1:
+            self._computacao_direta()
+        elif self.faseAtual == 2:
+            pass
+        elif self.faseAtual == 3:
+            pass
+
+
+    def _computacao_direta(self, ):
+        charLido = self.fitaEntradaESaida[self.posicaoCabecote]
+        tripla = self.dicionarioTransicoes[self.estadoAtual, charLido]
+        self.estadoAtual = tripla[0]
+
+        self.escreve_fita(tripla[1])
+        self.move_cabecote(tripla[2])
+    
+
