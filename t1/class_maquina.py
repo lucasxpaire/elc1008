@@ -37,7 +37,11 @@ class Maquina:
         self.fitaEntradaESaida = fita
 
     def escreve_fita(self, char:str):
-        self.fitaEntradaESaida[self.posicaoCabecote] = char
+        # self.fitaEntradaESaida
+        temp = list(self.fitaEntradaESaida)
+        temp[self.posicaoCabecote] = char
+        temp = "".join(temp)
+        self.set_fita_entrada(temp)
 
     def move_cabecote(self, dirEsq):
         if dirEsq == 'R':
@@ -55,8 +59,9 @@ class Maquina:
 
 
     def _computacao_direta(self, ):
-        charLido = self.fitaEntradaESaida[self.posicaoCabecote]
-        tripla = self.dicionarioTransicoes[self.estadoAtual, charLido]
-        self.estadoAtual = tripla[0]
-        self.escreve_fita(tripla[1])
-        self.move_cabecote(tripla[2])
+            while self.posicaoCabecote < len(self.fitaEntradaESaida):
+                charLido = self.fitaEntradaESaida[self.posicaoCabecote]
+                tripla = self.dicionarioTransicoes[self.estadoAtual][charLido]
+                self.estadoAtual = tripla[0]
+                self.escreve_fita(tripla[1])
+                self.move_cabecote(tripla[2])

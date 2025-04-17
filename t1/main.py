@@ -13,4 +13,8 @@ def le_arquivo(path):
         return definicaoMaquina
 
 maquina = le_arquivo("entrada-quintupla.txt")
-Maquina(maquina['estados'], maquina['alfabetoEntrada'], maquina['alfabetoFita'], maquina['funcoesTransicao'])
+turing = Maquina(maquina['estados'], maquina['alfabetoEntrada'], maquina['alfabetoFita'], maquina['funcoesTransicao'])
+turing.set_fita_entrada('1100')
+print(turing.fitaEntradaESaida)
+turing.processamento_main()
+print(turing.fitaEntradaESaida)
