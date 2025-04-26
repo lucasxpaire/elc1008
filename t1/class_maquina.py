@@ -11,7 +11,7 @@ class Maquina:
         self.estadoAtual = self.estados[0] #primeiro item da lista sempre é o primeiro estado da maquina
         self.posicaoCabecote = 0
         self.fitaEntradaESaida = str()  
-        self.fitaHistorico = str()
+        self.historicoFita = list()
         self.fitaCopiaFinal = str()
         self.faseAtual = 1
 
@@ -35,6 +35,7 @@ class Maquina:
 
     def set_fita_entrada(self, fita: str):
         self.fitaEntradaESaida = fita
+        self.historicoFita.append(fita)
 
     def escreve_fita(self, char:str):
         # self.fitaEntradaESaida
@@ -49,13 +50,9 @@ class Maquina:
         elif dirEsq == 'L':
             self.posicaoCabecote=self.posicaoCabecote-1
 
-    def processamento_main(self):
-        if self.faseAtual == 1:
-            self._computacao_direta()
-        elif self.faseAtual == 2:
-            pass
-        elif self.faseAtual == 3:
-            pass
+    def processamento_main(self): #add proximas fases aqui!!
+        self._computacao_direta()
+
 
 
     def _computacao_direta(self, ):
