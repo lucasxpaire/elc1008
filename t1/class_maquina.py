@@ -11,7 +11,6 @@ class Maquina:
         self.estadoAtual = self.estados[0] #primeiro item da lista sempre é o primeiro estado da maquina
         self.posicaoCabecote = 0
         self.fitaEntradaESaida = str()  
-        self.historicoFita = list()
         self.historicoTransicoes = list()
         self.fitaCopiaFinal = str()
         self.faseAtual = 1
@@ -54,7 +53,6 @@ class Maquina:
         self._computacao_direta()
 
 
-
     def _computacao_direta(self):
         while self.posicaoCabecote < len(self.fitaEntradaESaida):
             charLido = self.fitaEntradaESaida[self.posicaoCabecote]
@@ -64,7 +62,8 @@ class Maquina:
                 {
                     "estadoAnterior": self.estadoAtual,
                     "posicaoCabecoteAnterior": self.posicaoCabecote,
-                    "estadoFitaAnterior":self.fitaEntradaESaida
+                    "estadoFitaAnterior":self.fitaEntradaESaida,
+                    "charLido": charLido
                 }
             )
 
@@ -76,4 +75,5 @@ class Maquina:
         for transicao in reversed(self.historicoTransicoes):
             self.estadoAtual = transicao["estadoAnterior"]
             self.posicaoCabecote = transicao["posicaoCabecoteAnterior"]
-            self.set_fita_entrada(transicao["estadoFitaAnterior"])
+            self.escreve_fita(transicao["charLido"])
+            print(self.fitaEntradaESaida)
