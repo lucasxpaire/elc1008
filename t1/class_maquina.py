@@ -12,6 +12,7 @@ class Maquina:
         self.posicaoCabecote = 0
         self.fitaEntradaESaida = str()  
         self.historicoFita = list()
+        self.historicoTransicoes = list()
         self.fitaCopiaFinal = str()
         self.faseAtual = 1
 
@@ -35,7 +36,6 @@ class Maquina:
 
     def set_fita_entrada(self, fita: str):
         self.fitaEntradaESaida = fita
-        self.historicoFita.append(fita)
 
     def escreve_fita(self, char:str):
         # self.fitaEntradaESaida
@@ -55,11 +55,25 @@ class Maquina:
 
 
 
-    def _computacao_direta(self, ):
+    def _computacao_direta(self):
         while self.posicaoCabecote < len(self.fitaEntradaESaida):
             charLido = self.fitaEntradaESaida[self.posicaoCabecote]
             tripla = self.dicionarioTransicoes[self.estadoAtual][charLido]
+
+            self.historicoTransicoes.append(
+                {
+                    "estadoAnterior": self.estadoAtual,
+                    "posicaoCabecoteAnterior": self.posicaoCabecote,
+                    "estadoFitaAnterior":self.fitaEntradaESaida
+                }
+            )
+
             self.estadoAtual = tripla[0]
             self.escreve_fita(tripla[1])
             self.move_cabecote(tripla[2])
-        self.faseAtual=2
+
+    def reversa(self):
+        for transicao in reversed(self.historicoTransicoes):
+            self.estadoAtual = transicao["estadoAnterior"]
+            self.posicaoCabecote = transicao["posicaoCabecoteAnterior"]
+            self.set_fita_entrada(transicao["estadoFitaAnterior"])
