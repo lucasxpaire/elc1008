@@ -1,31 +1,36 @@
-from class_maquina import Maquina
+from turingReversivel import TuringReversivel
+def ler_arquivo(nome_arquivo):
+    with open(nome_arquivo, "r") as f:
+        linhas = [linha.strip() for linha in f if linha.strip()]
+    
+    estados = linhas[1].split()
+    alfabeto_entrada = linhas[2].split()
+    alfabeto_fita = linhas[3].split()
 
-def le_arquivo(path):
-    with open(path, "r") as f:
-        linhas = [linha.strip() for linha in f.readlines()]
+    transicoes = []
+    for linha in linhas[4:-1]:
+        esquerda, direita = linha.split("=")
+        estado, simbolo = esquerda.strip("()").split(",")
+        novo_estado, novo_simbolo, direcao = direita.strip("()").split(",")
 
-        definicaoMaquina = {
-            "estados": linhas[1].split(),
-            "alfabetoEntrada": linhas[2].split(),
-            "alfabetoFita": linhas[3].split(),
-            "funcoesTransicao": linhas[4:-1],
-            "fitaEntrada": linhas[-1]
-        }
-        return definicaoMaquina
+        transicoes.append((
+            estado.strip(), simbolo.strip(), novo_simbolo.strip(), direcao.strip(), novo_estado.strip()
+        ))
 
+    palavra_entrada = linhas[-1]
+
+    return estados, alfabeto_entrada, alfabeto_fita, transicoes, palavra_entrada
+
+
+def main():
+    nome_arquivo = "entrada-quintupla.txt"
+    estados, alfabeto_entrada, alfabeto_fita, transicoes, palavra_entrada = ler_arquivo(nome_arquivo)
+
+    maquina = TuringReversivel(estados, alfabeto_entrada, alfabeto_fita, transicoes)
+
+    maquina.carregar_entrada(palavra_entrada)
+    maquina.executar()
+    maquina.mostrar_fitas()
+    
 if __name__ == "__main__":
-    definicoes = le_arquivo("entrada-quintupla.txt")
-
-    turing = Maquina(
-        definicoes['estados'],
-        definicoes['alfabetoEntrada'],
-        definicoes['alfabetoFita'],
-        definicoes['funcoesTransicao']
-    )
-
-    fitaInicial = definicoes['fitaEntrada'] 
-    turing.set_fita_entrada(fitaInicial)
-
-    turing.processamento_main()
-
-    turing.mostrar_fitas()
+    main()
